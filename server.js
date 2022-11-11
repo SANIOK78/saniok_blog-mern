@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
+const fs = require('fs');
 // require('dotenv').config();
 const mongoose = require("mongoose");
 const checkAuth = require('./middlewares/checkAuth');
@@ -34,6 +35,11 @@ const app = express();
 const storage = multer.diskStorage({
     //1. destination
     destination: (_, __, cb) => {
+        // s'il n'y a pas dossier "uploads"
+        if( !fs.existsSync('uploads')) {
+            // on va la créer
+            fs.mkdirSync('uploads')
+        }
         cb(null, 'uploads');
     },
     filename: (_, file, cb) => {
